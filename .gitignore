@@ -10,3 +10,7 @@ Properties
 *.xsd
 *.xsc
 *.Designer.cs
+App_Data
+*.user
+*.asax
+*.asax.cs

@@ -34,7 +34,6 @@ namespace FreshersManagement.MVC.Areas.Fresher.Controllers
             return View();
         }
 
-        [ValidateAntiForgeryToken()]
         [HttpGet]
         public JsonResult Edit(int id)
         {
@@ -53,7 +52,6 @@ namespace FreshersManagement.MVC.Areas.Fresher.Controllers
             return Json(fresher, JsonRequestBehavior.AllowGet);
         }
 
-        [ValidateAntiForgeryToken()]
         [HttpPost]
         public JsonResult Edit(FresherDetail fresher)
         {
