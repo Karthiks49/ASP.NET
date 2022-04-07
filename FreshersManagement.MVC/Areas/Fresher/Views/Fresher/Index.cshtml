@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Fresher.FresherDetail>
+
+@{
+    ViewBag.Title = "Fresher's List";
+}
+<h2>Fresher's List</h2>
+<br />
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    @Html.AntiForgeryToken()
+</p>
+<br />
+<table class="table text-center">
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>DATE OF BIRTH</th>
+        <th>MOBILE NUMBER</th>
+        <th>ADDRESS</th>
+        <th>QUALIFICATION</th>
+        <th>ACTION</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.mobileNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.qualification)
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#updatePopup" data-id="@item.id"><i class="fa fa-pencil"></i> Edit</button>
+                |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+</table>
+
+
+<div class="modal fade" id="updatePopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">UPDATE</h5>
+            </div>
+            <div class="modal-body">
+                <form id="myForm">
+                    <div class="form-group">
+                        <label class="col-form-label">Name</label>
+                        <input type="text" autocomplete="off" class="form-control" name="Name" id="name" />
+                        
+                    </div><br />
+                    <div class="form-group">
+                        <label class="col-form-label">Date Of Birth</label>
+                        <input type="date" class="form-control" name="DateOfBirth" id="date-of-birth" />
+                    </div><br />
+                    <div class="form-group">
+                        <label class="col-form-label">Mobile Number</label>
+                        <input type="number" class="form-control" name="MobileNumber" id="mobile-number" />
+                    </div><br />
+                    <div class="form-group">
+                        <label class="col-form-label">Address</label>
+                        <input type="text" autocomplete="off" class="form-control" name="Address" id="address" />
+                    </div><br />
+                    <div class="form-group">
+                        <label class="col-form-label">Qualification</label>
+                        <input type="text" autocomplete="off" class="form-control" name="Qualification" id="qualification" />
+                    </div><br />
+                    <input type="submit" id="btnUpdate" class="btn btn-success" value="Save" name="submit" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

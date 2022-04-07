@@ -1,0 +1,12 @@
+﻿*.resx
+*.config
+*.Sln
+bin
+obj
+Properties
+.vs
+*.csproj
+*.xss
+*.xsd
+*.xsc
+*.Designer.cs

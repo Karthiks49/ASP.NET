@@ -1,0 +1,49 @@
+﻿@model Fresher.FresherDetail
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<h3>Are you sure you want to delete this fresher?</h3>
+<br />
+
+<table class="table">
+    <tbody>
+        <tr>
+            <th>@Html.LabelFor(model => model.id)</th>
+            <td>@Html.DisplayFor(model => model.id)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.name)</th>
+            <td>@Html.DisplayFor(model => model.name)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.dateOfBirth)</th>
+            <td>@Html.DisplayFor(model => model.dateOfBirth)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.mobileNumber)</th>
+            <td>@Html.DisplayFor(model => model.mobileNumber)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.address)</th>
+            <td>@Html.DisplayFor(model => model.address)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.qualification)</th>
+            <td>@Html.DisplayFor(model => model.qualification)</td>
+        </tr>
+    </tbody>
+</table><br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Delete" class="btn btn-danger" /> <br /><br />
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+}
+
+
