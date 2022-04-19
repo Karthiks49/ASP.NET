@@ -13,6 +13,6 @@ namespace FreshersManagement.Service
 
         int SaveFresher(FresherDetail fresher);
 
-        void DeleteFresher(int id);
+        int DeleteFresher(int id);
     }
 }

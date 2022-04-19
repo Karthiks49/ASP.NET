@@ -3,19 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using FreshersManagement.Service;
 using Fresher;
 using System.Globalization;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace FreshersManagement.MVC.Areas.Fresher.Controllers
 {
     public class FresherController : Controller
     {
-        private readonly IService service = new FresherService();
+        Uri baseAddress = new Uri("https://localhost:44394/api");
+        HttpClient client;
+
+        public FresherController()
+        {
+            client = new HttpClient();
+            client.BaseAddress = baseAddress;
+        }
 
         public ActionResult Index()
         {
-            return View(service.GetAllFreshers());
+            List<FresherDetail> fresherList = new List<FresherDetail>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress+ "/values").Result;
+            if(response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                fresherList = JsonConvert.DeserializeObject<List<FresherDetail>>(data); 
+            }
+
+            return View(fresherList);
         }
 
         public ActionResult Create()
@@ -26,11 +43,16 @@ namespace FreshersManagement.MVC.Areas.Fresher.Controllers
         [HttpPost]
         public ActionResult Create(FresherDetail fresher)
         {
-            if (ModelState.IsValid)
+
+            string data = JsonConvert.SerializeObject(fresher);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/values", content).Result;
+
+            if (response.IsSuccessStatusCode)
             {
-                service.SaveFresher(fresher);
                 return RedirectToAction("Index");
             }
+
             return View();
         }
 
@@ -38,8 +60,16 @@ namespace FreshersManagement.MVC.Areas.Fresher.Controllers
         public JsonResult Edit(int id)
         {
             var fresher = new FresherDetail();
-            
-            foreach (var item in service.GetAllFreshers())
+
+            List<FresherDetail> fresherList = new List<FresherDetail>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/values").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                fresherList = JsonConvert.DeserializeObject<List<FresherDetail>>(data);
+            }
+
+            foreach (var item in fresherList)
             {
                 if (item.id == id)
                 {
@@ -53,20 +83,31 @@ namespace FreshersManagement.MVC.Areas.Fresher.Controllers
         }
 
         [HttpPost]
-        public JsonResult Edit(FresherDetail fresher)
+        [ValidateAntiForgeryToken()]
+        public ActionResult Edit(FresherDetail fresher)
         {
-            int affectRows = 0;
-            if (ModelState.IsValid)
+            string data = JsonConvert.SerializeObject(fresher);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PutAsync(client.BaseAddress + "/values/" + fresher.id, content).Result;
+
+            if (response.IsSuccessStatusCode)
             {
-                affectRows = service.SaveFresher(fresher);
+                return Json(JsonRequestBehavior.AllowGet);
             }
-            return Json(affectRows, JsonRequestBehavior.AllowGet);
+
+            return View();
         }
         
-        public ActionResult Delete(int id)
+        public ActionResult DeleteFresher(int id)
         {
             FresherDetail fresher = null;
-            List<FresherDetail> fresherList = service.GetAllFreshers().ToList();
+            List<FresherDetail> fresherList = new List<FresherDetail>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/values").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                fresherList = JsonConvert.DeserializeObject<List<FresherDetail>>(data);
+            }
             foreach (var item in fresherList)
             {
                 if (item.id == id)
@@ -79,10 +120,13 @@ namespace FreshersManagement.MVC.Areas.Fresher.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection formCollection)
+        public ActionResult DeleteFresher(int id, string none)
         {
-            service.DeleteFresher(id);
-
+            HttpResponseMessage response = client.DeleteAsync(client.BaseAddress + "/values/" + id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            } 
             return RedirectToAction("Index");
         }
     }

@@ -46,7 +46,7 @@
             <td>
                 <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#updatePopup" data-id="@item.id"><i class="fa fa-pencil"></i> Edit</button>
                 |
-                @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })
+                @Html.ActionLink("Delete", "DeleteFresher", new { id = item.id }, new { @class = "btn btn-danger" })
             </td>
         </tr>
     }
@@ -61,10 +61,10 @@
             </div>
             <div class="modal-body">
                 <form id="myForm">
+                    <input type="hidden" autocomplete="off" class="form-control" name="Id" id="id" />
                     <div class="form-group">
                         <label class="col-form-label">Name</label>
                         <input type="text" autocomplete="off" class="form-control" name="Name" id="name" />
-                        
                     </div><br />
                     <div class="form-group">
                         <label class="col-form-label">Date Of Birth</label>
@@ -82,6 +82,7 @@
                         <label class="col-form-label">Qualification</label>
                         <input type="text" autocomplete="off" class="form-control" name="Qualification" id="qualification" />
                     </div><br />
+                    @Html.AntiForgeryToken()
                     <input type="submit" id="btnUpdate" class="btn btn-success" value="Save" name="submit" />
                 </form>
             </div>

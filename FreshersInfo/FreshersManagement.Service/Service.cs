@@ -24,9 +24,9 @@ namespace FreshersManagement.Service
             return freshermanagement.SaveFreshers(fresher);
         }
 
-        public void DeleteFresher(int id)
+        public int DeleteFresher(int id)
         {
-            freshermanagement.DeleteFresher(id);
+            return freshermanagement.DeleteFresher(id);
         }
     }
 }

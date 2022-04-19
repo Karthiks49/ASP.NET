@@ -1,5 +1,4 @@
 ﻿$(function () {
-
     $('#updatePopup').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget)
         var id = button.data('id')
@@ -70,14 +69,9 @@
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     data: updatedData,
-                    success: function (result) {
-                        if ('1' == result) {
-                            $('#updatePopup').hide();
-                            window.location.replace(window.location.href)
-
-                        } else {
-                            alert("Update failed");
-                        }
+                    success: function () {
+                        $('#updatePopup').hide();
+                        window.location.replace(window.location.href)
                     },
                     error: function () {
                         alert("Unexcepted Error!!!");
