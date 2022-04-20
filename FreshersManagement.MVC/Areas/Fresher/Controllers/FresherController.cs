@@ -8,13 +8,14 @@ using System.Globalization;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using System.Configuration;
 
 namespace FreshersManagement.MVC.Areas.Fresher.Controllers
 {
     public class FresherController : Controller
     {
-        Uri baseAddress = new Uri("https://localhost:44394/api");
-        HttpClient client;
+        readonly Uri baseAddress = new Uri(ConfigurationManager.AppSettings["BaseAddress"]);
+        readonly HttpClient client; 
 
         public FresherController()
         {
@@ -59,26 +60,17 @@ namespace FreshersManagement.MVC.Areas.Fresher.Controllers
         [HttpGet]
         public JsonResult Edit(int id)
         {
-            var fresher = new FresherDetail();
-
-            List<FresherDetail> fresherList = new List<FresherDetail>();
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/values").Result;
+            FresherDetail fresher = new FresherDetail();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/values/" + id).Result;
+           
             if (response.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
-                fresherList = JsonConvert.DeserializeObject<List<FresherDetail>>(data);
+                fresher = JsonConvert.DeserializeObject<FresherDetail>(data);
+                DateTime dateTime = DateTime.Parse(fresher.dateOfBirth);
+                fresher.dateOfBirth = dateTime.ToString("yyyy-MM-dd");
             }
 
-            foreach (var item in fresherList)
-            {
-                if (item.id == id)
-                {
-                    fresher = item;
-                }
-            }
-            DateTime dateTime = DateTime.Parse(fresher.dateOfBirth);
-            fresher.dateOfBirth = dateTime.ToString("yyyy-MM-dd");
-            
             return Json(fresher, JsonRequestBehavior.AllowGet);
         }
 

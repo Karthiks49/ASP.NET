@@ -62,7 +62,6 @@
             },
             submitHandler: function () {
                 var updatedData = $('#myForm').serialize();
-
                 $.ajax({
                     url: "/Fresher/Fresher/Edit",
                     type: "POST",

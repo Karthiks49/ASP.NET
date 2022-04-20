@@ -19,6 +19,11 @@ namespace FreshersManagement.Service
             return freshersList;
         }
 
+        public FresherDetail GetFresher(int id)
+        {
+            return freshermanagement.GetParticularFresher(id);
+        }
+
         public int SaveFresher(FresherDetail fresher)
         {
             return freshermanagement.SaveFreshers(fresher);

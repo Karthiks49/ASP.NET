@@ -19,9 +19,9 @@ namespace FreshersManagement.WebAPI.Controllers
         }
 
         // GET api/values/5
-        public int Get(int id)
+        public FresherDetail Get(int id)
         {
-            return id;
+            return service.GetFresher(id);
         }
 
         // POST api/values

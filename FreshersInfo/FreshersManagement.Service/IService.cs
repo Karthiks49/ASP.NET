@@ -11,6 +11,8 @@ namespace FreshersManagement.Service
     {
         IEnumerable<FresherDetail> GetAllFreshers();
 
+        FresherDetail GetFresher(int id);
+
         int SaveFresher(FresherDetail fresher);
 
         int DeleteFresher(int id);
